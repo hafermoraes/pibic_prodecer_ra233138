@@ -1,0 +1,1557 @@
+
+
+	
+* Leitura e tratamento dos Dados
+  
+** Bibliotecas do R
+   
+   #+begin_src R :results none :session 
+
+   library(readr)   # read_delim
+   library(dplyr)   # bind_rows, %>%, mutate, etc..
+
+   #+end_src
+
+
+** Prodecer
+
+   Dados disponíveis:
+
+   - Todos os produtos
+   - Área colhida, Rendimento e Valor da produção em percentual da produção total
+   - Triênios
+	 - 1980  (média de 1978, 1979 e 1980)
+	 - 2000  (média de 1998, 1999 e 2000) 
+	 - 2020  (média de 2018, 2019 e 2020)
+
+*** Dados a nível da Mesoregião
+   
+**** Área colhida em hectares
+	 #+begin_src R :results none :session 
+
+	 ## Área colhida em hectares / Mesoregiões pertencentes ao Prodecer
+	 prodecer_meso_area <- bind_rows(
+	   read_delim('raw/prodecer_meso_area_1978', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_1979', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_1980', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_area_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmeso = X2
+		,meso_regiao = X3
+		,codprod = X6
+		,produto = X7
+		,area_meso = as.numeric(X8)
+	   )
+	 #+end_src
+	 
+**** Rendimento em quilogramas por hectare
+
+	 #+begin_src R :results none :session 
+
+	 ## Rendimento / Mesoregiões pertencentes ao Prodecer
+	 prodecer_meso_rendimento <- bind_rows(
+	   read_delim('raw/prodecer_meso_rendimento_1978', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_1979', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_1980', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_rendimento_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmeso = X2
+		,meso_regiao = X3
+		,codprod = X6
+		,produto = X7
+		,rend_meso = as.numeric(X8)
+	   )
+
+	 #+end_src
+	 
+**** Valor da produção em percentual da produção total
+
+	 #+begin_src R :results none :session 
+
+	 ## Valor da produção em percentual do total / Mesoregiões pertencentes ao Prodecer
+	 prodecer_meso_valorprod <- bind_rows(
+	   read_delim('raw/prodecer_meso_valorprod_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_valorprod_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_valorprod_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_valorprod_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_valorprod_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_meso_valorprod_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmeso = X2
+		,meso_regiao = X3
+		,codprod = X6
+		,produto = X7
+		,pctprodtotal_meso = as.numeric(X8)
+	   )
+
+	 #+end_src
+
+	
+
+	 
+*** Dados a nível do Município
+   
+**** Área colhida em hectares
+
+	 #+begin_src R :results none :session 
+
+	 ## Área colhida em hectares / Municípios pertencentes ao Prodecer
+	 prodecer_muni_area <- bind_rows(
+	   read_delim('raw/prodecer_muni_area_1978', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_1979', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_1980', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_area_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmuni = X2
+		,municipio = X3
+		,codprod = X6
+		,produto = X7
+		,area_muni = as.numeric(X8)
+	   )
+
+
+	 #+end_src
+	 
+**** Rendimento em quilogramas por hectare
+
+	 #+begin_src R :results none :session 
+
+	 ## Rendimento / Municípios pertencentes ao Prodecer
+	 prodecer_muni_rendimento <- bind_rows(
+	   read_delim('raw/prodecer_muni_rendimento_1978', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_1979', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_1980', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_rendimento_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmuni = X2
+		,municipio = X3
+		,codprod = X6
+		,produto = X7
+		,rend_muni = as.numeric(X8)
+	   )
+
+
+	 #+end_src
+	 
+**** Valor da produção em percentual da produção total
+
+	 #+begin_src R :results none :session 
+
+	 ## Valor da produção em percentual do total / Municípios pertencentes ao Prodecer
+	 prodecer_muni_valorprod <- bind_rows(
+	   read_delim('raw/prodecer_muni_valorprod_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_valorprod_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_valorprod_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_valorprod_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_valorprod_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/prodecer_muni_valorprod_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmuni = X2
+		,municipio = X3
+		,codprod = X6
+		,produto = X7
+		,pctprodtotal_muni = as.numeric(X8)
+	   )
+
+
+	 #+end_src
+
+	
+
+
+
+** Brasil
+   Dados disponíveis:
+
+   - Soja e Total
+   - Área colhida e Rendimento
+   - Triênios
+	 - 2000  (média de 1998, 1999 e 2000) 
+	 - 2020  (média de 2018, 2019 e 2020)
+
+*** Dados a nível da Mesoregião
+   
+**** Área colhida em hectares
+
+	 #+begin_src R :results none :session 
+
+	 ## Área colhida em hectares / Soja e Total de Produtos / Brasil
+	 brasil_meso_area <- bind_rows(
+	   read_delim('raw/brasil_meso_area_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_area_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_area_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_area_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_area_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_area_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmeso = X2
+		,meso_regiao = X3
+		,codprod = X6
+		,produto = X7
+		,area_br = as.numeric(X8)
+	   )
+
+
+	 #+end_src
+	 
+**** Rendimento em quilogramas por hectare
+
+	 #+begin_src R :results none :session 
+
+	 ## Rendimento / Soja e Total de Produtos / Brasil
+	 brasil_meso_rendimento <- bind_rows(
+	   read_delim('raw/brasil_meso_rend_1998', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_rend_1999', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_rend_2000', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_rend_2018', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_rend_2019', delim='|', col_names=F, col_types = cols(.default = "c"))
+	  ,read_delim('raw/brasil_meso_rend_2020', delim='|', col_names=F, col_types = cols(.default = "c"))
+	 ) %>%
+	   transmute(
+		 ano = as.numeric(X1)
+		,codmeso = X2
+		,meso_regiao = X3
+		,codprod = X6
+		,produto = X7
+		,rend_br = as.numeric(X8)
+	   )
+
+
+	 #+end_src
+	 
+
+** DTB (Divisão Territorial Brasileira de 2018
+
+   #+begin_src R :results none :session 
+
+   ## Municípios por mesoregião (Divisão Territorial Brasileira de 2018)
+   muni_meso <- read_delim(
+	 file = 'raw/relatorio_dtb_brasil_municipio'
+	,delim='|'
+	,skip = 1
+	,col_names=F
+	,col_types = cols(.default = "c") ) %>%
+	 transmute(
+	   codmeso = paste0( X1, X3 )
+	  ,codmuni = X8
+	 ) 
+
+   ## municípios (e respectivas mesoregiões) contemplados pelo Prodecer
+   munis_prodecer <- prodecer_muni_area %>%
+	 select(codmuni) %>%
+	 unique() %>%
+	 as.data.frame()
+
+   muni_prodecer <- read_delim(
+	 file = 'raw/relatorio_dtb_brasil_municipio'
+	,delim='|'
+	,skip = 1
+	,col_names=F
+	,col_types = cols(.default = "c") ) %>%
+	 transmute(
+	   codmuni = X8
+	  ,codmeso = paste0( X1, X3 )
+	  ,prodecer = ifelse( # municípios com atuação do Prodecer
+		 codmuni %in% munis_prodecer[,1]
+		,TRUE
+		,FALSE
+	   )
+	 ) 
+
+
+   #+end_src
+  
+   
+* Análises
+
+   #+begin_src R :results none :session
+
+   ## bilbiotecas de análise
+   library(tidyr)   # pivoteamento de tibble com pivot_longer()
+   library(ggplot2) # gráficos
+   library(ggrepel) # geom_text com afastamento de rótulos
+   library(tidyr)   # pivot_wider
+   library(writexl) # write_xlsx
+
+   #+end_src
+  
+** Produtos mais significativos por município do Prodecer
+
+   A determinação dos produtos mais significativos por município é feita em dois passos:
+   - Passo 1: Produtos e municípios nos quais [área colhida município] / [área colhida mesoregião] > 1%
+   - Passo 2: Produtos e municípios nos quais QL > 1
+	 
+   #+begin_src R :results none :session
+
+   ## Passo 1: por ano, por triênio, por produto, [Área Total Município] / [Área Total Mesoregião]
+   passo1 <- prodecer_muni_area %>% 
+	 left_join( prodecer_muni_rendimento, by = c('ano'='ano', 'codmuni'='codmuni', 'codprod'='codprod')) %>% 
+	 left_join( prodecer_muni_valorprod, by = c('ano'='ano', 'codmuni'='codmuni', 'codprod'='codprod')) %>% 
+	 left_join( muni_meso, by = c('codmuni'='codmuni') ) %>% 
+	 left_join( prodecer_meso_area, by = c('ano'='ano', 'codmeso'='codmeso', 'codprod'='codprod')) %>% 
+	 na.omit() %>%
+	 filter( area_muni > 0, area_meso > 0 ) %>% 
+	 transmute(
+	   ano
+	  ,trienio = case_when(
+		 ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+	   )
+	  ,codmuni
+	  ,municipio = municipio.x
+	  ,codprod
+	  ,produto = produto.x
+	  ,area_muni
+	  ,rend_muni
+	  ,pctprod = pctprodtotal_muni # valor de produção percentual do total de produtos
+	  ,codmeso
+	  ,meso_regiao
+	  ,area_meso
+	  ,pct_muni_div_meso = ( area_muni / area_meso )
+	 ) # %>% filter( pct_muni_div_meso > 0.01 )
+
+   ## Passo 2: por ano, por triênio, por produto, cálculo do QL 
+   passo2 <- passo1 %>%
+	   left_join(
+		   prodecer_muni_area %>% group_by( ano, codmuni ) %>% summarise( total_muni = sum(area_muni) )
+		   , by = c('ano'='ano', 'codmuni'='codmuni')
+	   ) %>% 
+	   left_join(
+		   prodecer_meso_area %>% group_by( ano, codmeso ) %>% summarise( total_meso = sum(area_meso) )
+		   , by = c('ano'='ano', 'codmeso'='codmeso')
+	   ) %>%
+	   rowwise() %>%
+	   mutate(
+		   QL = ( area_muni / area_meso  ) / ( total_muni / total_meso )
+	   ) # %>% filter( QL > 1 )
+
+
+   ## >>>>>>>>>>>>>>>>>>>>
+   ## QL_ano
+   QL_prodecer_ano <- passo2 %>% select( -trienio ) 
+   ## exporta resultados para arquivo csv
+   QL_prodecer_ano %>% write_xlsx( './data/comp_area_rend_valorprod/QL_pct_valor_prod_prodecer_ano.xlsx')
+
+   ## >>>>>>>>>>>>>>>>>>>>
+   ## QL_trienio
+
+   ## Total do município, tanto por ano ou por trienio, não pode variar
+   ##  por produto
+   aux_trienio_total_muni <- passo2 %>%
+	 group_by(  # agrupa primeiro por ano...
+	   ano, codmuni, municipio
+	 ) %>% 
+	 summarise( # para determinar a área colhida total por mesoregião por ano.
+	   area_total_ano = sum( area_muni )
+	 ) %>% 
+	 mutate( 
+	   trienio = case_when(
+		 ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+	   )
+	 ) %>%
+	 group_by(   # Em seguida, agrupa por triênio...
+	   trienio, codmuni, municipio
+	 ) %>%
+	 summarise(  # para calcular a área colhida média por mesoregião por triênio
+	   media_totais_muni = mean( area_total_ano )
+	 )
+
+   ## Validação dos cálculos de ~aux_trienio_total_muni~
+   ## passo2 %>%
+   ##   filter( codmuni == '1716505') %>%
+   ##   group_by( ano, trienio, codmuni, municipio ) %>%
+   ##   summarise( area_muni_ano = sum( area_muni ) )  %>% View
+
+   ## aux_trienio_total_muni %>% filter( codmuni == '1716505') %>% View
+
+   ## médias trienais por municipio e produto
+   aux_trienio_muni <- passo2 %>% 
+	 mutate(
+	   rend_tot_muni = rend_muni * area_muni
+	  ,pctprod_tot_muni = pctprod * area_muni
+	 ) %>%
+	 group_by(
+	   trienio, codmuni, municipio, codprod, produto
+	 ) %>%
+	 summarise(
+	   media_area_muni = mean( area_muni )
+	  ,media_rend_muni = sum( rend_tot_muni ) / sum( area_muni )
+	  ,media_pctprod = sum( pctprod_tot_muni ) / sum( area_muni )
+	 ) %>%
+	 left_join(
+	   aux_trienio_total_muni %>% select( trienio, codmuni, media_totais_muni),
+	   by = c('trienio'='trienio','codmuni'='codmuni')
+	 ) 
+
+   ## médias trienais por meso_regiao e produto
+
+   ## Total da meso_regiao, tanto por ano ou por trienio, não pode variar
+   ##  por produto ou municipio
+   aux_trienio_total_meso <- prodecer_meso_area %>% 
+	 group_by(  # agrupa primeiro por ano...
+	   ano, codmeso, meso_regiao
+	 ) %>% 
+	 summarise( # para determinar a área colhida total por mesoregião por ano.
+	   area_total_ano = sum( area_meso )
+	 ) %>% 
+	 mutate( 
+	   trienio = case_when(
+		 ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+	   )
+	 ) %>%
+	 group_by(   # Em seguida, agrupa por triênio...
+	   trienio, codmeso, meso_regiao
+	 ) %>%
+	 summarise(  # para calcular a área colhida média por mesoregião por triênio
+	   media_totais_meso = mean( area_total_ano )
+	 ) 
+
+   ## Validação dos cálculos de ~aux_trienio_total_meso~
+   ## prodecer_meso_area %>%
+   ##   mutate( 
+   ##     trienio = case_when(
+   ## 	  ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+   ## 	 ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+   ## 	 ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+   ## 	)
+   ##   )%>%
+   ##   filter( codmeso == '1702') %>%
+   ##   group_by( ano, trienio, codmeso, meso_regiao ) %>%
+   ##   summarise( area_total_ano = sum( area_meso ) )  %>% View
+   ##
+   ## aux_trienio_total_meso %>% filter( codmeso == '1702') %>% View
+
+
+   ## Área média produzida por triênio, mesoregiao e produto 
+   aux_trienio_area_meso <- passo2 %>% 
+	 group_by(
+	   trienio, codmeso, meso_regiao, codprod, produto
+	 ) %>%
+	 summarise(
+	   media_area_meso = mean( area_meso )
+	 ) 
+
+   ## Validação dos cálculos de ~aux_trienio_area_meso~
+   ## passo2 %>%
+   ##   select(
+   ## 	trienio, codmeso, meso_regiao, codprod, produto
+   ##     ,area_meso
+   ##   ) %>%
+   ##   arrange( codmeso, codprod, trienio ) %>%
+   ##   filter( codmeso == '1702', codprod == '40092') %>% View
+
+   ## aux_trienio_area_meso %>% filter( codmeso == '1702', codprod == '40092') %>% View
+
+   ## >>>>>>>>>>>>>>>> corrigir por último!!
+   QL_prodecer_trienio <- aux_trienio_muni %>% 
+	 left_join(
+	   muni_meso, by = c('codmuni'='codmuni')
+	 ) %>% 
+	 left_join(
+	   aux_trienio_area_meso
+	  ,by = c('trienio'='trienio','codmeso'='codmeso','codprod'='codprod')
+	 ) %>% 
+	 left_join(
+	   aux_trienio_total_meso
+	  ,by = c('trienio'='trienio','codmeso'='codmeso')
+	 ) %>% 
+	 transmute(
+	   trienio, codmuni, municipio, codprod, produto = produto.x
+	  ,media_area_muni, media_rend_muni, media_pctprod
+	  ,codmeso, meso_regiao = meso_regiao.x
+	  ,media_area_meso
+	  ,pct_muni_div_meso = media_area_muni / media_area_meso
+	  ,media_totais_muni
+	  ,media_totais_meso
+	  ,QL = ( media_area_muni / media_area_meso ) / ( media_totais_muni / media_totais_meso )
+	 )
+
+   ## validação QL_prodecer_trienio
+   ## QL_prodecer_trienio %>% 
+   ##   filter( codmeso == '5202' ) %>%
+   ##   select(
+   ##     trienio, municipio, produto, meso_regiao
+   ##     ,media_totais_muni, media_totais_meso
+   ##   ) %>%
+   ##   View
+
+   ## exporta resultados para arquivo csv
+   QL_prodecer_trienio %>% write_xlsx( './data/comp_area_rend_valorprod/QL_pct_valor_prod_prodecer_trienio.xlsx')
+
+   #+end_src
+
+*** Rankings: Tabelas e Gráfico da Área colhida (eixo x)  vs Rendimento (eixo y)
+	
+**** Por triênio
+
+	#+begin_src R :results none :session
+
+	## Por triênio, Ranking por produto conforme área colhida e valor da produção (em percentual do total)
+	ranking_trienio <- passo2 %>%
+		mutate(
+			pctprod_tot_muni = area_muni * pctprod
+		) %>% 
+		group_by( trienio, produto ) %>%
+		summarise(
+			media_area = mean(area_muni)
+		   ,media_pctprod = ( sum(pctprod_tot_muni)/sum(area_muni) )
+		) %>%
+		group_by( trienio ) %>%
+		mutate(
+			rank_area = n() - rank(media_area) + 1
+		   ,rank_pctprod = n() - rank(media_pctprod) + 1
+		) %>%
+		arrange( desc( trienio), desc( media_area) ) 
+
+	## Gráficos dos Rankings
+	##   Por triênio
+	trienios <- passo2[,'trienio'] %>% unique() %>% as.data.frame()
+	for(arg_trienio in trienios[,1] ){
+	  ranking <- ranking_trienio %>% filter( trienio == arg_trienio )
+	  if( nrow(ranking) == 0 ) {
+		next
+	  } 
+	  gr_ranking <- ranking %>%
+		ggplot( aes( x = rank_area, y = rank_pctprod, label = produto) ) +
+		geom_point() +
+		geom_text_repel() +
+		scale_x_discrete( limits = 1:nrow(ranking) ) + 
+		scale_y_discrete( limits = 1:nrow(ranking) ) +
+		labs(
+		  x = 'Ranking da área média colhida por hectare'
+		 ,y = 'Ranking do valor de produção (em percentual do total)'
+		 ,title = 'Comparação por produto das maiores áreas colhidas e valor de produção'
+		 ,subtitle = paste0(
+			'Dados do '
+		   ,arg_trienio
+		   ,' obtidos via SIDRA/IBGE, Tabela 5457, para os municípios contemplados pelo Prodecer'
+		  )
+		 ,caption = 'Fonte: https://sidra.ibge.gov.br/tabela/5457'
+		)
+	  ggsave(
+		paste0(
+		  './img/rankings/trienio/rankings_'
+		 ,arg_trienio
+		 ,'.png'
+		)
+	   ,plot = gr_ranking
+	   ,width = 10
+	   ,height = 7
+	   ,units = 'in'
+	  )
+	  ranking %>% write_xlsx( paste0('./data/rankings/trienio/ranking_',arg_trienio,'.xlsx') )
+	}
+
+	#+end_src	
+
+
+**** Por ano
+	 
+	#+begin_src R :results none :session
+
+	## Por ano, Ranking por produto conforme área colhida e valor de produção (em percentual do total)
+	ranking_ano <- passo2 %>% 
+		mutate(
+			pctprod_tot_muni = area_muni * pctprod 
+		) %>% 
+		group_by( ano, produto ) %>%
+		summarise(
+			total_area = sum(area_muni)
+		   ,media_pctprod = ( sum(pctprod_tot_muni)/sum(area_muni) )
+		) %>% 
+		group_by( ano ) %>%
+		mutate(
+			rank_area = n() - rank(total_area) + 1
+		   ,rank_pctprod = n() - rank(media_pctprod) + 1
+		) %>%
+		arrange( desc(ano), desc(total_area) ) 
+
+	## Gráficos dos Rankings
+	##   Por ano
+	anos <- passo2[,'ano'] %>% unique() %>% as.data.frame()
+	for(arg_ano in anos[,1] ){
+	  ranking <- ranking_ano %>% filter( ano == arg_ano )
+	  if( nrow(ranking) == 0 ) {
+		next
+	  } 
+	  gr_ranking <- ranking %>%
+		ggplot( aes( x = rank_area, y = rank_pctprod, label = produto) ) +
+		geom_point() +
+		geom_text_repel() +
+		scale_x_discrete( limits = 1:nrow(ranking) ) + 
+		scale_y_discrete( limits = 1:nrow(ranking) ) +
+		labs(
+		  x = 'Ranking da área colhida por hectare'
+		 ,y = 'Ranking do valor de produção (em percentual do total)'
+		 ,title = 'Comparação por produto das maiores áreas colhidas e valor de produção'
+		 ,subtitle = paste0(
+			'Dados do ano de '
+		   ,arg_ano
+		   ,' obtidos via SIDRA/IBGE, Tabela 5457, para os municípios contemplados pelo Prodecer'
+		  )
+		 ,caption = 'Fonte: https://sidra.ibge.gov.br/tabela/5457'
+		)
+	  ggsave(
+		paste0(
+		  './img/rankings/ano/rankings_'
+		 ,arg_ano
+		 ,'.png'
+		)
+	   ,plot = gr_ranking
+	   ,width = 10
+	   ,height = 7
+	   ,units = 'in'
+	  )
+	  ranking %>% write_xlsx( paste0('./data/rankings/ano/ranking_',arg_ano,'.xlsx') )
+	}
+
+	#+end_src
+	
+
+*** TOP maiores QL por Município e Produto
+	
+**** Por Triênio
+
+	 #+begin_src R :results none :session
+
+	 ql <- QL_prodecer_trienio %>% as.data.frame()
+	 trienios <- ql[,'trienio'] %>% unique()
+
+	 ## exportar para excel (TOP 3 produto por cidade ordenado por QL)
+	 TOP <- 3
+	 for(arg_periodo in trienios){
+	   ql %>%
+		 filter( trienio == arg_periodo ) %>%
+		 select( trienio, municipio, produto, QL) %>%
+		 filter( QL > 1 ) %>%
+		 group_by( municipio) %>%
+		 top_n( TOP, QL ) %>%
+		 arrange( desc(QL), .by_group = TRUE) %>% 
+		 write_xlsx(
+		   paste0(
+			 './data/top_QLs/trienio/'
+			,arg_periodo
+			,'_Top', TOP,'_QL.xlsx'
+		   )
+		 )
+	 }
+
+	 ## exportar para excel (TOP 5 produto por cidade ordenado por QL)
+	 TOP <- 5
+	 for(arg_periodo in trienios){
+	   ql %>%
+		 filter( trienio == arg_periodo ) %>%
+		 select( trienio, municipio, produto, QL) %>%
+		 filter( QL > 1 ) %>%
+		 group_by( municipio) %>%
+		 top_n( TOP, QL ) %>%
+		 arrange( desc(QL), .by_group = TRUE) %>% 
+		 write_xlsx(
+		   paste0(
+			 './data/top_QLs/trienio/'
+			,arg_periodo
+			,'_Top', TOP,'_QL.xlsx'
+		   )
+		 )
+	 }
+
+	 ## heatmap
+	 ## TOP <- 5
+	 ## ql %>%
+	 ##   filter( trienio == 'Triênio 1998-2000') %>%
+	 ## 	select( municipio, produto, QL) %>%
+	 ## 	filter( QL > 1 ) %>%
+	 ## 	group_by( municipio) %>%
+	 ## 	top_n( TOP, QL ) %>%
+	 ## 	arrange( desc(QL), .by_group = TRUE) %>%
+	 ## 	pivot_wider(
+	 ## 		id_cols = produto
+	 ## 		,names_from = municipio
+	 ## 		,values_from = QL
+	 ## 	) %>%
+	 ## 	View
+
+	 #+end_src
+	 
+
+**** Por Ano
+
+	 #+begin_src R :results none :session
+
+	 ql <- QL_prodecer_ano %>% as.data.frame()
+	 anos <- ql[,'ano'] %>% unique()
+
+	 ## exportar para excel (TOP 3 produto por cidade ordenado por QL)
+	 TOP <- 3
+	 for(arg_periodo in anos){
+	   ql %>%
+		 filter( ano == arg_periodo ) %>%
+		 select( ano, municipio, produto, QL) %>%
+		 filter( QL > 1 ) %>%
+		 group_by( municipio) %>%
+		 top_n( TOP, QL ) %>%
+		 arrange( desc(QL), .by_group = TRUE) %>% 
+		 write_xlsx(
+		   paste0(
+			 './data/top_QLs/ano/'
+			,arg_periodo
+			,'_Top', TOP,'_QL.xlsx'
+		   )
+		 )
+	 }
+
+	 ## exportar para excel (TOP 5 produto por cidade ordenado por QL)
+	 TOP <- 5
+	 for(arg_periodo in anos){
+	   ql %>%
+		 filter( ano == arg_periodo ) %>%
+		 select( ano, municipio, produto, QL) %>%
+		 filter( QL > 1 ) %>%
+		 group_by( municipio) %>%
+		 top_n( TOP, QL ) %>%
+		 arrange( desc(QL), .by_group = TRUE) %>% 
+		 write_xlsx(
+		   paste0(
+			 './data/top_QLs/ano/'
+			,arg_periodo
+			,'_Top', TOP,'_QL.xlsx'
+		   )
+		 )
+	 }
+
+	 ## heatmap
+	 ## TOP <- 5
+	 ## ql %>%
+	 ##   filter( ano == 2020) %>%
+	 ## 	select( municipio, produto, QL) %>%
+	 ## 	filter( QL > 1 ) %>%
+	 ## 	group_by( municipio) %>%
+	 ## 	top_n( TOP, QL ) %>%
+	 ## 	arrange( desc(QL), .by_group = TRUE) %>%
+	 ## 	pivot_wider(
+	 ## 		id_cols = produto
+	 ## 		,names_from = municipio
+	 ## 		,values_from = QL
+	 ## 	) %>%
+	 ## 	View
+
+	 #+end_src
+	 
+
+
+*** Produtos: Comparação entre Municípios -  Área colhida (eixo X) vs Rendimento (eixo Y)
+	
+**** Por Triênio
+
+	 #+begin_src R :results none :session
+
+	 ## gráficos de área colhida vs rendimento por produto (cidades dentro do gráfico)
+	 trienios <- QL_prodecer_trienio %>%
+	   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+	   as.data.frame() %>%
+	   select( trienio ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 prods <- QL_prodecer_trienio %>%
+	   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+	   as.data.frame() %>%
+	   select( produto ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 for(arg_produto in prods[,1] ){
+	   for( arg_periodo in trienios[,1]){
+		 gr_data <- QL_prodecer_trienio %>%
+		   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+		   filter( produto == arg_produto, trienio == arg_periodo ) %>%
+		   rename(
+			 area_muni = media_area_muni
+			,rend_muni = media_rend_muni
+		   )
+		 if( nrow(gr_data) == 0 ){
+		   next
+		 }
+		 gr_produto <- gr_data %>% 
+		   ggplot(
+			 aes(
+			   x = area_muni/1e3
+			  ,y = rend_muni/1e3
+			  ,label = paste0(
+				 municipio
+				,'\n(', round(pct_muni_div_meso*100,1),'%)'
+			   )
+			 )
+		   ) +
+		   geom_point() +
+		   geom_vline(xintercept = mean(gr_data$area_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_hline(yintercept = mean(gr_data$rend_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_text_repel() +
+		   labs(
+			 x = 'média da área colhida (em milhares de hectares)'
+			,y = 'média do rendimento (em toneladas por hectare)'
+			,title = arg_produto
+			,subtitle = paste0(
+			   'Dados do '
+			  ,arg_periodo
+			  ,' obtidos via SIDRA/IBGE, Tabela 5457,'
+			  ,' para os municípios contemplados pelo Prodecer'
+			 )
+			,caption = paste0(
+			   'Observações: '
+			  ,'\n1. Coeficiente de correlação linear ~ '
+			  ,round( cor( gr_data$area_muni, gr_data$rend_muni), 5)
+			  ,'\n2. Linhas tracejadas representam as médias (para os municípios contemplados no gráfico).'
+			  ,'\n3. Números em parênteses correspondem ao percentual da área média colhida no município em relação à área média colhida na mesoregião'
+			  ,'\n4. Fazem parte do gráfico somente municípios com QL acima de 1 E área média colhida superior a 1% da respectiva mesoregião'
+			  ,'\n5. fonte: https://sidra.ibge.gov.br/tabela/5457'
+			 )
+		   ) 
+		 ggsave(
+		   paste0('./img/comp_area_rend/trienio/',arg_produto,'_',arg_periodo,'.png')
+		  ,plot = gr_produto
+		  ,width = 10
+		  ,height = 7
+		  ,units = 'in'
+		 )
+	   }
+	 }
+
+
+     #+end_src
+
+**** Por Ano
+
+	 #+begin_src R :results none :session
+
+	 ## gráficos de área colhida vs rendimento por produto (cidades dentro do gráfico)
+	 anos <- QL_prodecer_ano %>%
+	   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+	   as.data.frame() %>%
+	   select( ano ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 prods <- QL_prodecer_ano %>%
+	   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+	   as.data.frame() %>%
+	   select( produto ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 for(arg_produto in prods[,1] ){
+	   for( arg_periodo in anos[,1]){
+		 gr_data <- QL_prodecer_ano %>%
+		   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+		   filter( produto == arg_produto, ano == arg_periodo )
+		 if( nrow(gr_data) == 0 ){
+		   next
+		 }
+		 gr_produto <- gr_data %>% 
+		   ggplot(
+			 aes(
+			   x = area_muni/1e3
+			  ,y = rend_muni/1e3
+			  ,label = paste0(
+				 municipio
+				,'\n(', round(pct_muni_div_meso*100,1),'%)'
+			   )
+			 )
+		   ) +
+		   geom_point() +
+		   geom_vline(xintercept = mean(gr_data$area_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_hline(yintercept = mean(gr_data$rend_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_text_repel() +
+		   labs(
+			 x = 'área colhida (em milhares de hectares)'
+			,y = 'rendimento (em toneladas por hectare)'
+			,title = arg_produto
+			,subtitle = paste0(
+			   'Dados de '
+			  ,arg_periodo
+			  ,' obtidos via SIDRA/IBGE, Tabela 5457,'
+			  ,' para os municípios contemplados pelo Prodecer'
+			 )
+			,caption = paste0(
+			   'Observações: '
+			  ,'\n1. Coeficiente de correlação linear ~ '
+			  ,round( cor( gr_data$area_muni, gr_data$rend_muni), 5)
+			  ,'\n2. Linhas tracejadas representam as médias (para os municípios contemplados no gráfico).'
+			  ,'\n3. Números em parênteses correspondem ao percentual da área colhida no município em relação à área colhida na mesoregião'
+			  ,'\n4. Fazem parte do gráfico somente municípios com QL acima de 1 E área colhida superior a 1% da respectiva mesoregião'
+			  ,'\n5. fonte: https://sidra.ibge.gov.br/tabela/5457'
+			 )
+		   ) 
+		 ggsave(
+		   paste0('./img/comp_area_rend/ano/',arg_produto,'_',arg_periodo,'.png')
+		  ,plot = gr_produto
+		  ,width = 10
+		  ,height = 7
+		  ,units = 'in'
+		 )
+	   }
+	 }
+
+
+     #+end_src
+	 
+
+*** Municípios: Comparação entre produtos - Área colhida (eixo X) vs Valor da produção em percentual do total (eixo Y)
+
+**** Por Triênio
+
+	 #+begin_src R :results none :session
+
+	 ## gráficos de área colhida vs rendimento por produto (cidades dentro do gráfico)
+	 trienios <- QL_prodecer_trienio %>%
+	   filter( pct_muni_div_meso > 0.01, media_pctprod > 1) %>%
+	   as.data.frame() %>%
+	   select( trienio ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 munis <- QL_prodecer_trienio %>%
+	   filter( pct_muni_div_meso > 0.01, media_pctprod > 1) %>%
+	   as.data.frame() %>%
+	   select( municipio ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 for(arg_muni in munis[,1] ){
+	   for( arg_periodo in trienios[,1]){
+		 gr_data <- QL_prodecer_trienio %>%
+		   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+		   filter( municipio == arg_muni, trienio == arg_periodo ) %>%
+		   rename(
+			 area_muni = media_area_muni
+			,pctprod_muni = media_pctprod
+		   )
+		 if( nrow(gr_data) == 0 ){
+		   next
+		 }
+		 gr_muni <- gr_data %>% 
+		   ggplot(
+			 aes(
+			   x = area_muni/1e3
+			  ,y = pctprod_muni/1e3
+			  ,label = paste0(
+				 produto
+				,'\n(', round(pct_muni_div_meso*100,1),'%)'
+			   )
+			 )
+		   ) +
+		   geom_point() +
+		   geom_vline(xintercept = mean(gr_data$area_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_hline(yintercept = mean(gr_data$pctprod_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_text_repel() +
+		   labs(
+			 x = 'média da área colhida (em milhares de hectares)'
+			,y = 'média do valor da produção (em percentual do total)'
+			,title = arg_muni
+			,subtitle = paste0(
+			   'Dados do '
+			  ,arg_periodo
+			  ,' obtidos via SIDRA/IBGE, Tabela 5457,'
+			  ,' para os municípios contemplados pelo Prodecer'
+			 )
+			,caption = paste0(
+			   'Observações: '
+			  ,'\n1. Coeficiente de correlação linear ~ '
+			  ,round( cor( gr_data$area_muni, gr_data$pctprod_muni), 5)
+			  ,'\n2. Linhas tracejadas representam as médias (para os produtos contemplados no gráfico)'
+			  ,'\n3. Números em parênteses correspondem ao percentual médio da área colhida no município em relação à área média colhida na respectiva mesoregião'
+			  ,'\n4. Fazem parte do gráfico somente produtos com QL acima de 1 E área média colhida superior a 1% da respectiva mesoregião'
+			  ,'\n5. fonte: https://sidra.ibge.gov.br/tabela/5457'
+			 )
+		   ) 
+		 ggsave(
+		   paste0('./img/comp_area_pctprod/trienio/',arg_muni,'_',arg_periodo,'.png')
+		  ,plot = gr_muni
+		  ,width = 10
+		  ,height = 7
+		  ,units = 'in'
+		 )
+	   }
+	 }
+
+
+     #+end_src
+	 
+	 
+**** Por Ano
+
+	 #+begin_src R :results none :session
+
+	 ## gráficos de área colhida vs rendimento por produto (cidades dentro do gráfico)
+	 anos <- QL_prodecer_ano %>%
+	   filter( pct_muni_div_meso > 0.01, pctprod > 1) %>%
+	   as.data.frame() %>%
+	   select( ano ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 munis <- QL_prodecer_ano %>%
+	   filter( pct_muni_div_meso > 0.01, pctprod > 1) %>%
+	   as.data.frame() %>%
+	   select( municipio ) %>%
+	   unique() %>%
+	   as.data.frame()
+
+	 for(arg_muni in munis[,1] ){
+	   for( arg_periodo in anos[,1]){
+		 gr_data <- QL_prodecer_ano %>%
+		   filter( pct_muni_div_meso > 0.01, QL > 1) %>%
+		   filter( municipio == arg_muni, ano == arg_periodo ) %>%
+		   rename(
+			pctprod_muni = pctprod
+		   )
+		 if( nrow(gr_data) == 0 ){
+		   next
+		 }
+		 gr_muni <- gr_data %>% 
+		   ggplot(
+			 aes(
+			   x = area_muni/1e3
+			  ,y = pctprod_muni/1e3
+			  ,label = paste0(
+				 produto
+				,'\n(', round(pct_muni_div_meso*100,1),'%)'
+			   )
+			 )
+		   ) +
+		   geom_point() +
+		   geom_vline(xintercept = mean(gr_data$area_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_hline(yintercept = mean(gr_data$pctprod_muni/1e3), linetype = 'dashed', color = 'darkgray') + 
+		   geom_text_repel() +
+		   labs(
+			 x = 'área colhida (em milhares de hectares)'
+			,y = 'valor da produção (em percentual do total)'
+			,title = arg_muni
+			,subtitle = paste0(
+			   'Dados de '
+			  ,arg_periodo
+			  ,' obtidos via SIDRA/IBGE, Tabela 5457,'
+			  ,' para os municípios contemplados pelo Prodecer'
+			 )
+			,caption = paste0(
+			   'Observações: '
+			  ,'\n1. Coeficiente de correlação linear ~ '
+			  ,round( cor( gr_data$area_muni, gr_data$pctprod_muni), 5)
+			  ,'\n2. Linhas tracejadas representam as médias (para os produtos contemplados no gráfico)'
+			  ,'\n3. Números em parênteses correspondem ao percentual da área colhida no município em relação à área colhida na respectiva mesoregião'
+			  ,'\n4. Fazem parte do gráfico somente produtos com QL acima de 1 E área média colhida superior a 1% da respectiva mesoregião'
+			  ,'\n5. fonte: https://sidra.ibge.gov.br/tabela/5457'
+			 )
+		   ) 
+		 ggsave(
+		   paste0('./img/comp_area_pctprod/ano/',arg_muni,'_',arg_periodo,'.png')
+		  ,plot = gr_muni
+		  ,width = 10
+		  ,height = 7
+		  ,units = 'in'
+		 )
+	   }
+	 }
+
+     #+end_src
+	 
+	 
+** Comparação das Mesoregiões contempladas pelo Prodecer com o Brasil
+   
+   Somente para a Soja (em grão), comparar as mesoregiões contempladas pelo Prodecer com as demais mesoregiões do Brasil
+   
+*** Soja: Comparação entre mesoregiões - Área colhida (eixo X) vs Rendimento (eixo Y)
+
+**** Por ano
+
+	 Cálculo do QL por ano.
+	  
+     #+begin_src R :results none :session
+
+	 ## Rendimento da soja por ano e meso região
+	 aux_rend_soja_meso <- brasil_meso_rendimento %>%
+	   filter( codprod == '40124' ) %>% # Soja (em grão)
+	   transmute(
+		 ano
+		,codmeso
+		,codprod
+		,rend_soja_meso = rend_br
+	   )
+
+	 ##                            (N1)  area_soja_meso
+	 ##                        --------------------------
+	 ##                            (D1)   area_soja_br
+	 ## QL (soja, meso) = ---------------------------------------
+	 ##                            (N2)  area_total_meso
+	 ##                        --------------------------
+	 ##                            (D2)   area_total_br
+	 ## QL = ( area_soja_meso / area_soja_br ) / ( area_total_meso / area_total_br )
+
+	 ## (N1) Área colhida de soja por meso região e por ano
+	 aux_area_soja_meso <- brasil_meso_area %>%
+	   filter( codprod == '40124' ) %>% # Soja (em grão)
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( ano, trienio, codmeso, meso_regiao, codprod, produto ) %>%
+	   summarise( area_soja_meso = sum( area_br ) )
+
+	 ## (D1) Área colhida total de Soja por ano no Brasil
+	 aux_area_soja_br <- brasil_meso_area %>%
+	   filter( codprod == '40124' ) %>% # Soja (em grão)
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( ano, trienio ) %>%
+	   summarise( area_soja_br = sum( area_br ) )
+
+	 ## (N2) Área colhida de todos os produtos por meso região e por ano
+	 aux_area_total_meso <- brasil_meso_area %>%
+	   filter( codprod == '0' ) %>% # Total
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( ano, trienio, codmeso, meso_regiao ) %>%
+	   summarise( area_total_meso = sum( area_br ) )
+
+	 ## (D2) Área colhida total de todos os produtos por ano
+	 aux_area_total_br <- brasil_meso_area %>%
+	   filter( codprod == '0' ) %>% # Total de todos os produtos
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( ano, trienio ) %>%
+	   summarise( area_total_br = sum( area_br ) )
+
+
+	 ## Área colhida de soja somente nos municípios contemplados pelo Prodecer
+	 aux_area_soja_prodecer_meso <- prodecer_muni_area %>%
+	   left_join( muni_prodecer, by = c('codmuni'='codmuni') ) %>%
+	   filter( codprod == '40124' ) %>%
+	   group_by( ano, codmeso, codprod ) %>%
+	   summarise( area_soja_prodecer = sum(area_muni) )
+
+
+	 ## QL Comparativo de Mesoregião com Brasil por ano
+	 QL_prodecer_br_ano <- aux_area_soja_meso %>%
+	   left_join(
+		 muni_prodecer %>% select( codmeso, prodecer ) %>% filter( prodecer == TRUE ) %>% unique()
+		,by = c('codmeso'='codmeso')
+	   ) %>%
+	   left_join(
+		 aux_rend_soja_meso
+		,by = c('ano'='ano','codmeso'='codmeso','codprod'='codprod')
+	   ) %>%
+	   left_join(
+		 aux_area_soja_br
+		,by = c('ano'='ano')
+	   ) %>%
+	   left_join(
+		 aux_area_total_meso
+		,by = c('ano'='ano', 'codmeso'='codmeso')
+	   ) %>%
+	   left_join(
+		 aux_area_total_br
+		,by = c('ano'='ano')
+	   ) %>%
+	   left_join(
+		 aux_area_soja_prodecer_meso
+		,by = c('ano'='ano','codmeso'='codmeso','codprod'='codprod')
+	   ) %>%
+	   transmute(
+		 ano
+		,codmeso, meso_regiao = meso_regiao.x
+		,prodecer = ifelse( is.na(prodecer), FALSE, TRUE )
+		,codprod, produto
+		,area_soja_meso, rend_soja_meso
+		,area_soja_prodecer = ifelse( is.na(area_soja_prodecer), 0, area_soja_prodecer)
+		,pct_area_soja_prodecer = area_soja_prodecer / area_soja_meso
+		,area_total_meso
+		,area_soja_br, area_total_br
+		,pct_soja_meso_div_br = ifelse( area_soja_br == 0, NA, area_soja_meso / area_soja_br )
+		,pct_total_meso_div_br = area_total_meso / area_total_br
+		,QL = ( area_soja_meso / area_soja_br ) / ( area_total_meso / area_total_br )
+	   ) 
+
+	 ## exporta resultados para arquivo csv
+	 QL_prodecer_br_ano %>% write_xlsx( './data/comp_soja_prodecer_br/QL_soja_prodecer_br_ano.xlsx')
+
+
+     #+end_src
+
+	 Gráfico da área colhida pelo rendimento por ano
+	 #+begin_src R :results none :session
+
+	 ## gráficos de área colhida vs rendimento por produto (cidades dentro do gráfico)
+	 anos <- QL_prodecer_br_ano %>% as.data.frame()
+	 anos <- anos[,'ano'] %>% unique()
+
+	 for( arg_periodo in anos){
+	   gr_data <- QL_prodecer_br_ano %>%
+		 filter(
+		   ano == arg_periodo
+		  ,pct_soja_meso_div_br > 0.01
+		  ,QL > 1
+		 )
+	   gr_data <- bind_rows(
+		 ## Mesoregiões contempladas pelo Prodecer
+		 gr_data %>% filter( prodecer == TRUE )
+		,## Top 5 Mesoregiões não contempladas pelo Prodecer
+		 gr_data %>%
+		 filter( prodecer == FALSE ) %>%
+		 arrange( desc( pct_soja_meso_div_br ) ) %>%
+		 head(5)
+	   )
+	   if( nrow( gr_data ) == 0 ) {
+		 next
+	   }
+	   gr_produto <- gr_data %>% 
+		 ggplot(
+		   aes(
+			 x = area_soja_meso/1e3
+			,y = rend_soja_meso/1e3
+			,group = prodecer, color = prodecer
+			,label = paste0(
+			   meso_regiao
+			  ,'\n(', round(pct_soja_meso_div_br*100,1),'%'
+			  ,'; ', round(pct_area_soja_prodecer*100,1),'%)'
+			 )
+		   )
+		 ) +
+		 geom_point() +
+		 geom_vline(xintercept = mean(gr_data$area_soja_meso/1e3), linetype = 'dashed', color = 'darkgray') + 
+		 geom_hline(yintercept = mean(gr_data$rend_soja_meso/1e3), linetype = 'dashed', color = 'darkgray') + 
+		 geom_text_repel() +
+		 theme( legend.position = 'none') +
+		 labs(
+		   x = 'área colhida (em milhares de hectares)'
+		  ,y = 'rendimento (em toneladas por hectare)'
+		  ,title = 'Soja (em grãos)'
+		  ,subtitle = paste0(
+			 'Dados de '
+			,arg_periodo
+			,', comparativos das mesoregiões contempladas pelo Prodecer com as 5 mais representativas e não contempladas'
+		   )
+		  ,caption = paste0(
+			 'Observações: '
+			,'\n1. Linhas tracejadas representam as médias (para as mesoregiões contempladas no gráfico).'
+			,'\n2. Mesoregiões contempladas pelo Prodecer (azul) e 5 Mesoregiões mais representativas (vide observação 3. abaixo) não contempladas pelo Prodecer (vermelho)'
+			,'\n3. Primeiro percentual nos parênteses corresponde ao percentual da área colhida de soja na mesoregião em relação à área colhida de soja no Brasil'
+			,'\n4. Segundo percentual nos parênteses corresponde ao percentual da área colhida de soja contemplada pelo Prodecer'
+			,'\n5. fonte: https://sidra.ibge.gov.br/tabela/5457'
+		   )
+		 )
+	   ggsave(
+		 paste0('./img/comp_soja_prodecer_br/ano/Soja (em grãos)_',arg_periodo,'.png')
+		,plot = gr_produto
+		,width = 10
+		,height = 7
+		,units = 'in'
+	   )
+	 }
+      #+end_src
+
+**** Por Triênio
+
+	 Cálculo do QL por triênio.
+	  
+     #+begin_src R :results none :session
+
+	 ## Rendimento da soja por ano e meso região
+	 aux_rend_soja_meso <- brasil_meso_rendimento %>%
+	   filter( codprod == '40124' ) %>% # Soja (em grão)
+	   transmute(
+		 ano
+		,codmeso
+		,codprod
+		,rend_soja_meso = rend_br
+	   )
+
+	 ##                              (N1)  media_area_soja_meso
+	 ##                              --------------------------
+	 ##                              (D1)   media_area_soja_br
+	 ## QL (soja, meso) =       ---------------------------------------
+	 ##                              (N2)  media_area_total_meso
+	 ##                              --------------------------
+	 ##                              (D2)   media_area_total_br
+	 ## QL = ( area_soja_meso / area_soja_br ) / ( area_total_meso / area_total_br )
+
+	 ## (N1) Área colhida de soja por meso região e por ano
+	 aux_area_soja_meso <- brasil_meso_area %>%
+	   filter( codprod == '40124' ) %>% # Soja (em grão)
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( ano, trienio, codmeso, meso_regiao, codprod, produto ) %>%
+	   summarise( area_soja_meso = sum( area_br ) )
+
+	 ## (D1) Área colhida total de Soja por ano no Brasil
+	 aux_area_soja_br <- brasil_meso_area %>%
+	   filter( codprod == '40124' ) %>% # Soja (em grão)
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( trienio ) %>%
+	   summarise( media_area_soja_br = mean( area_br ) )
+
+	 ## (N2) Área colhida de todos os produtos por meso região e por ano
+	 aux_area_total_meso <- brasil_meso_area %>%
+	   filter( codprod == '0' ) %>% # Total
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( trienio, codmeso, meso_regiao ) %>%
+	   summarise( media_area_total_meso = mean( area_br ) )
+
+	 ## (D2) Área colhida total de todos os produtos por ano
+	 aux_area_total_br <- brasil_meso_area %>%
+	   filter( codprod == '0' ) %>% # Total de todos os produtos
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( trienio ) %>%
+	   summarise( media_area_total_br = mean( area_br ) )
+
+
+	 ## Área colhida de soja somente nos municípios contemplados pelo Prodecer
+	 aux_area_soja_prodecer_meso <- prodecer_muni_area %>%
+	   left_join( muni_prodecer, by = c('codmuni'='codmuni') ) %>%
+	   filter( codprod == '40124' ) %>%
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+	   ) %>%
+	   group_by( trienio, codmeso, codprod ) %>%
+	   summarise( media_area_soja_prodecer = mean(area_muni) )
+
+	 ## média ponderada dos percentuais no triênio
+	 ##  - pct_area_soja_prodecer = area_soja_prodecer / area_soja_meso
+	 ##  - pct_soja_meso_div_br = area_soja_meso / area_soja_br
+	 ##  - pct_total_meso_div_br = area_total_meso / area_total_br
+	 aux_pct_ponderados <- QL_prodecer_br_ano %>%
+	   mutate(
+		 trienio = case_when(
+		   ano %in% c(1978,1979,1980) ~ 'Triênio 1978-1980'
+		  ,ano %in% c(1998,1999,2000) ~ 'Triênio 1998-2000'
+		  ,ano %in% c(2018,2019,2020) ~ 'Triênio 2018-2020'
+		 )
+		,numerador_pct_prodecer = pct_area_soja_prodecer * area_soja_meso
+		,numerador_pct_meso = pct_soja_meso_div_br * area_soja_br
+		,numerador_pct_total = pct_total_meso_div_br * area_total_br
+	   ) %>% 
+	   group_by(
+		 trienio, codmeso, meso_regiao, codprod, produto
+	   ) %>%
+	   summarise(
+		 pct_media_area_soja_prodecer = ifelse( sum( area_soja_meso ) == 0, 0, sum( numerador_pct_prodecer ) / sum( area_soja_meso ) )
+		,pct_media_soja_meso_div_br = ifelse( sum( area_soja_br ) == 0, 0, sum( numerador_pct_meso ) / sum( area_soja_br ) )
+		,pct_media_total_meso_div_br = ifelse( sum( area_total_br ) ==0, 0, sum( numerador_pct_total ) / sum( area_total_br ))
+	   )
+
+	 ## QL Comparativo de Mesoregião com Brasil por trienio
+	 QL_prodecer_br_trienio <- aux_area_soja_meso %>%
+	   left_join(
+		 muni_prodecer %>% select( codmeso, prodecer ) %>% filter( prodecer == TRUE ) %>% unique()
+		,by = c('codmeso'='codmeso')
+	   ) %>%
+	   left_join(
+		 aux_rend_soja_meso
+		,by = c('ano'='ano','codmeso'='codmeso','codprod'='codprod')
+	   ) %>%
+	   mutate( # cálculo intermediário para obter o rendimento médio por triênio
+		 rend_tot_soja = area_soja_meso * rend_soja_meso
+	   ) %>% 
+	   group_by(
+		 trienio, codmeso, meso_regiao, codprod, produto, prodecer
+	   ) %>%
+	   summarise(
+		 media_area_soja_meso = mean( area_soja_meso )
+		,media_rend_soja_meso = ifelse( sum(area_soja_meso) ==0, 0 ,sum( rend_tot_soja ) / sum(area_soja_meso) )
+	   ) %>% 
+	   left_join(
+		 aux_area_soja_br
+		,by = c('trienio'='trienio')
+	   ) %>%
+	   left_join(
+		 aux_area_total_meso
+		,by = c('trienio'='trienio', 'codmeso'='codmeso')
+	   ) %>%
+	   left_join(
+		 aux_area_total_br
+		,by = c('trienio'='trienio')
+	   ) %>%
+	   left_join(
+		 aux_area_soja_prodecer_meso
+		,by = c('trienio'='trienio','codmeso'='codmeso','codprod'='codprod')
+	   ) %>% 
+	   left_join(
+		 aux_pct_ponderados
+		,by = c('trienio'='trienio','codmeso'='codmeso','codprod'='codprod')
+	   ) %>% 
+	   transmute(
+		trienio
+		,codmeso, meso_regiao = meso_regiao.x
+		,prodecer = ifelse( is.na(prodecer), FALSE, TRUE )
+		,codprod, produto.x
+		,media_area_soja_meso, media_rend_soja_meso
+		,media_area_soja_prodecer = ifelse( is.na(media_area_soja_prodecer), 0, media_area_soja_prodecer)
+		,pct_media_area_soja_prodecer
+		,media_area_total_meso
+		,media_area_soja_br, media_area_total_br
+		,pct_media_soja_meso_div_br
+		,pct_media_total_meso_div_br
+		,QL = ( media_area_soja_meso / media_area_soja_br ) / ( media_area_total_meso / media_area_total_br )
+	   ) 
+
+	 ## exporta resultados para arquivo csv
+	 QL_prodecer_br_trienio %>% write_xlsx( './data/comp_soja_prodecer_br/QL_soja_prodecer_br_trienio.xlsx')
+
+     #+end_src
+
+	 Gráfico da área colhida pelo rendimento por triênio
+	 
+	 #+begin_src R :results none :session
+
+	 ## gráficos de área colhida vs rendimento por produto (cidades dentro do gráfico)
+	 trienios <- QL_prodecer_br_trienio %>% as.data.frame()
+	 trienios <- trienios[,'trienio'] %>% unique()
+
+	 for( arg_periodo in trienios){
+	   gr_data <- QL_prodecer_br_trienio %>%
+		 filter(
+		   trienio == arg_periodo
+		  ,pct_media_soja_meso_div_br > 0.01
+		  ,QL > 1
+		 )
+	   gr_data <- bind_rows(
+		 ## Mesoregiões contempladas pelo Prodecer
+		 gr_data %>% filter( prodecer == TRUE )
+		,## Top 5 Mesoregiões não contempladas pelo Prodecer
+		 gr_data %>%
+		 filter( prodecer == FALSE ) %>%
+		 arrange( desc( pct_media_soja_meso_div_br ) ) %>%
+		 head(5)
+	   )
+	   if( nrow( gr_data ) == 0 ) {
+		 next
+	   }
+	   gr_produto <- gr_data %>% 
+		 ggplot(
+		   aes(
+			 x = media_area_soja_meso/1e3
+			,y = media_rend_soja_meso/1e3
+			,group = prodecer, color = prodecer
+			,label = paste0(
+			   meso_regiao
+			  ,'\n(', round(pct_media_soja_meso_div_br*100,1),'%'
+			  ,'; ', round(pct_media_area_soja_prodecer*100,1),'%)'
+			 )
+		   )
+		 ) +
+		 geom_point() +
+		 geom_vline(xintercept = mean(gr_data$media_area_soja_meso/1e3), linetype = 'dashed', color = 'darkgray') + 
+		 geom_hline(yintercept = mean(gr_data$media_rend_soja_meso/1e3), linetype = 'dashed', color = 'darkgray') + 
+		 geom_text_repel() +
+		 theme( legend.position = 'none') +
+		 labs(
+		   x = 'média da área colhida (em milhares de hectares)'
+		  ,y = 'média do rendimento (em toneladas por hectare)'
+		  ,title = 'Soja (em grãos)'
+		  ,subtitle = paste0(
+			 'Dados do '
+			,arg_periodo
+			,', comparativos das mesoregiões contempladas pelo Prodecer com as 5 mais representativas e não contempladas'
+		   )
+		  ,caption = paste0(
+			 'Observações: '
+			,'\n1. Linhas tracejadas representam as médias (para as mesoregiões contempladas no gráfico).'
+			,'\n2. Mesoregiões contempladas pelo Prodecer (azul) e 5 Mesoregiões mais representativas (vide observação 3. abaixo) não contempladas pelo Prodecer (vermelho)'
+			,'\n3. Primeiro percentual nos parênteses corresponde ao percentual da área colhida de soja na mesoregião em relação à área colhida de soja no Brasil'
+			,'\n4. Segundo percentual nos parênteses corresponde ao percentual da área colhida de soja contemplada pelo Prodecer'
+			,'\n5. fonte: https://sidra.ibge.gov.br/tabela/5457'
+		   )
+		 )
+	   ggsave(
+		 paste0('./img/comp_soja_prodecer_br/trienio/Soja (em grãos)_',arg_periodo,'.png')
+		,plot = gr_produto
+		,width = 10
+		,height = 7
+		,units = 'in'
+	   )
+	 }
+      #+end_src
+

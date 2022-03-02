@@ -1,0 +1,1574 @@
+
+Dados do IC-PRODECER
+  
+Fonte >>> https://sidra.ibge.gov.br/tabela/5457
+
+* Baixa dados brutos
+
+** PRODECER
+
+*** Mesoregião
+
+	Mesoregiões (Prodecer): n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205
+	
+**** Área colhida
+
+***** Triênio 2018-2020
+****** 2020
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2020/c782/all
+
+	   #+name: area_colhida_mesoregiao_prodecer_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2020/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2019
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2019/c782/all
+	
+	   #+name: area_colhida_mesoregiao_prodecer_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2019/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2018
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2018/c782/all
+	
+	   #+name: area_colhida_mesoregiao_prodecer_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2018/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+***** Triênio 1998-2000
+****** 2000
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2000/c782/all
+
+	   #+name: area_colhida_mesoregiao_prodecer_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2000/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1999
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1999/c782/all
+	
+	   #+name: area_colhida_mesoregiao_prodecer_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1999/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1998
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1998/c782/all
+	
+	   #+name: area_colhida_mesoregiao_prodecer_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1998/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+	 
+***** Triênio 1978-1980
+****** 1980
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1980/c782/all
+
+	   #+name: area_colhida_mesoregiao_prodecer_1980
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1980/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_1980      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1979
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1979/c782/all
+	
+	   #+name: area_colhida_mesoregiao_prodecer_1979
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1979/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_1979      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1978 (problemas na API...)
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1978/c782/all
+	
+	   #+name: area_colhida_mesoregiao_prodecer_1978
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/1978/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_area_1978      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+	 
+**** Rendimento
+
+***** Triênio 2018-2020
+****** 2020
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2020/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2020/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2019
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2019/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2019/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2018
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2018/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2018/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+***** Triênio 1998-2000
+****** 2000
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2000/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/2000/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+	 
+****** 1999
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1999/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1999/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1998
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1998/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1998/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+	 
+***** Triênio 1978-1980
+****** 1980
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1980/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_1980
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1980/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_1980      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+	 
+****** 1979
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1979/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_1979
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1979/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_1979      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1978
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1978/c782/all
+	
+	   #+name: rendimento_mesoregiao_prodecer_1978
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/112/p/1978/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_rendimento_1978      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+	 
+**** Valor produção
+
+***** Triênio 2018-2020
+****** 2020
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2020/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_mesoregiao_prodecer_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2020/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_valorprod_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2019
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2019/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_mesoregiao_prodecer_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2019/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_valorprod_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2018
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2018/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_mesoregiao_prodecer_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2018/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_valorprod_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+
+	 
+	 
+
+
+***** Triênio 1998-2000
+****** 2000
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2000/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_mesoregiao_prodecer_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/2000/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_valorprod_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1999
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/1999/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_mesoregiao_prodecer_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/1999/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_valorprod_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1998
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/1998/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_mesoregiao_prodecer_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/1000215/p/1998/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_meso_valorprod_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+
+	 
+	 
+
+
+
+	 
+	 
+
+
+*** Município
+
+	Municípios (Prodecer): n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175
+  
+**** Área colhida
+
+***** Triênio 2018-2020
+****** 2020
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2020/c782/all
+
+	   #+name: area_colhida_muni_prodecer_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2020/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2019
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2019/c782/all
+	
+	   #+name: area_colhida_muni_prodecer_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2019/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2018
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2018/c782/all
+	
+	   #+name: area_colhida_muni_prodecer_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2018/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+***** Triênio 1998-2000
+****** 2000
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2000/c782/allhttps://apisidra.ibge.gov.br/values/t/5457/n8/1702,2105,2901,3101,3105,5003,5101,5202,5204,5205/v/216/p/2020/c782/all
+
+	   #+name: area_colhida_muni_prodecer_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/2000/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1999
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1999/c782/all
+	
+	   #+name: area_colhida_muni_prodecer_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1999/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1998
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1998/c782/all
+	
+	   #+name: area_colhida_muni_prodecer_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1998/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+	 
+***** Triênio 1978-1980
+****** 1980
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1980/c782/all
+
+	   #+name: area_colhida_muni_prodecer_1980
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1980/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_1980      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1979
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1979/c782/all
+	
+	   #+name: area_colhida_muni_prodecer_1979
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1979/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_1979      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1978
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1978/c782/all
+	
+	   #+name: area_colhida_muni_prodecer_1978
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/216/p/1978/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_area_1978      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+	 
+**** Rendimento
+
+***** Triênio 2018-2020
+****** 2020
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2020/c782/all
+	
+	   #+name: rendimento_muni_prodecer_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2020/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2019
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2019/c782/all
+	
+	   #+name: rendimento_muni_prodecer_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2019/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2018
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2018/c782/all
+	
+	   #+name: rendimento_muni_prodecer_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2018/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+***** Triênio 1998-2000
+****** 2000
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2000/c782/all
+	
+	   #+name: rendimento_muni_prodecer_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/2000/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+	 
+****** 1999
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1999/c782/all
+	
+	   #+name: rendimento_muni_prodecer_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1999/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1998
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1998/c782/all
+	
+	   #+name: rendimento_muni_prodecer_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1998/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+	 
+***** Triênio 1978-1980
+****** 1980
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1980/c782/all
+	
+	   #+name: rendimento_muni_prodecer_1980
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1980/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_1980      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+	 
+****** 1979
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1979/c782/all
+	
+	   #+name: rendimento_muni_prodecer_1979
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1979/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_1979      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1978
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1978/c782/all
+	
+	   #+name: rendimento_muni_prodecer_1978
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/112/p/1978/c782/all' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_rendimento_1978      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+	 
+**** Valor produção
+
+***** Triênio 2018-2020
+****** 2020
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2020/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_muni_prodecer_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2020/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_valorprod_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2019
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2019/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_muni_prodecer_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2019/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_valorprod_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 2018
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2018/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_muni_prodecer_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2018/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_valorprod_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+
+	 
+	 
+
+
+***** Triênio 1998-2000
+****** 2000
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2000/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_muni_prodecer_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/2000/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_valorprod_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1999
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/1999/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_muni_prodecer_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/1999/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_valorprod_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+****** 1998
+
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/1998/c782/all/d/v1000215%202
+	 
+	   #+name: valor_producao_muni_prodecer_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n6/2101400,2911105,3108206,3109303,3126208,3128600,3147006,3119302,3131604,5000203,1716505,5200605,5214606,5220009,5206206,5204805,5210109,5105259,5108006,5200175/v/1000215/p/1998/c782/all/d/v1000215%202' |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) do Município
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   grep -v '|Total|' |       # ignora linhas que contenham o texto |Total|
+		   awk -F'|' '$8 >= 0' > raw/prodecer_muni_valorprod_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+
+	 
+	 
+
+
+
+	 
+	 
+
+
+
+
+** BRASIL
+   QL > 1 e area_meso/area_brasil > 1%
+   Scatter-plot rendimento (y) x area (x)
+  
+*** Meso
+
+**** Area (Soja e Total de produtos)
+
+***** Triênio 2018-2020
+	 
+****** 2020
+	  
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2020/c782/0,40124
+
+	   #+name: area_colhida_meso_br_2020
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2020/c782/0,40124' --output - |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   awk -F'|' '$8 >= 0' > raw/brasil_meso_area_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+	  
+****** 2019
+	  
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2019/c782/0,40124
+
+	   #+name: area_colhida_meso_br_2019
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2019/c782/0,40124' --output - |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   awk -F'|' '$8 >= 0' > raw/brasil_meso_area_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+****** 2018
+	  
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2018/c782/0,40124
+
+	   #+name: area_colhida_meso_br_2018
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2018/c782/0,40124' --output - |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   awk -F'|' '$8 >= 0' > raw/brasil_meso_area_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src	  
+
+
+
+
+***** Triênio 1998-2000
+
+****** 2000
+	  
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2000/c782/0,40124
+
+	   #+name: area_colhida_meso_br_2000
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/2000/c782/0,40124' --output - |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   awk -F'|' '$8 >= 0' > raw/brasil_meso_area_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+****** 1999
+	  
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/1999/c782/0,40124
+
+	   #+name: area_colhida_meso_br_1999
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/1999/c782/0,40124' --output - |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   awk -F'|' '$8 >= 0' > raw/brasil_meso_area_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+
+****** 1998
+	  
+	   API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/1998/c782/0,40124
+
+	   #+name: area_colhida_meso_br_1998
+	   #+begin_src shell :results silent
+	   curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/216/p/1998/c782/0,40124' --output - |
+		   # D3N - Ano
+		   # Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+		   # Código (D2C) e Nome (D2N) da Variável
+		   # Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+		   # V - valor
+		   jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+		   sed 's/\\"//g' |          # remove \"
+		   sed 's/"//g' |            # remove "
+		   sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+		   sed 's/*//g' |            # remove *
+		   sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+		   sed 's/|-/|0/g' |         # substitui |- por |0
+		   tail -n +2 |              # ignora a linha de título
+		   awk -F'|' '$8 >= 0' > raw/brasil_meso_area_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+	   #+end_src
+
+
+
+	  
+	  
+**** Rendimento (Soja e Total de produtos)
+
+***** Triênio 2018-2020
+
+****** 2020
+
+		API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2020/c782/0,40124
+
+		#+name: rend_soja_muni_br_2020
+		#+begin_src shell :results silent
+		curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2020/c782/0,40124' --output - |
+			# D3N - Ano
+			# Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+			# Código (D2C) e Nome (D2N) da Variável
+			# Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+			# V - valor
+			jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+			sed 's/\\"//g' |          # remove \"
+			sed 's/"//g' |            # remove "
+			sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+			sed 's/*//g' |            # remove *
+			sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+			sed 's/|-/|0/g' |         # substitui |- por |0
+			tail -n +2 |              # ignora a linha de título
+			awk -F'|' '$8 >= 0' > raw/brasil_meso_rend_2020      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+		#+end_src
+
+
+****** 2019
+
+		API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2019/c782/0,40124
+
+		#+name: rend_soja_muni_br_2019
+		#+begin_src shell :results silent
+		curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2019/c782/0,40124' --output - |
+			# D3N - Ano
+			# Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+			# Código (D2C) e Nome (D2N) da Variável
+			# Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+			# V - valor
+			jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+			sed 's/\\"//g' |          # remove \"
+			sed 's/"//g' |            # remove "
+			sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+			sed 's/*//g' |            # remove *
+			sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+			sed 's/|-/|0/g' |         # substitui |- por |0
+			tail -n +2 |              # ignora a linha de título
+			awk -F'|' '$8 >= 0' > raw/brasil_meso_rend_2019      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+		#+end_src
+
+
+****** 2018
+
+		API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2018/c782/0,40124
+
+		#+name: rend_soja_muni_br_2018
+		#+begin_src shell :results silent
+		curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2018/c782/0,40124' --output - |
+			# D3N - Ano
+			# Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+			# Código (D2C) e Nome (D2N) da Variável
+			# Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+			# V - valor
+			jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+			sed 's/\\"//g' |          # remove \"
+			sed 's/"//g' |            # remove "
+			sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+			sed 's/*//g' |            # remove *
+			sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+			sed 's/|-/|0/g' |         # substitui |- por |0
+			tail -n +2 |              # ignora a linha de título
+			awk -F'|' '$8 >= 0' > raw/brasil_meso_rend_2018      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+		#+end_src
+
+
+***** Triênio 1998-2000
+	  
+****** 2000
+
+		API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2000/c782/0,40124
+
+		#+name: rend_soja_muni_br_2000
+		#+begin_src shell :results silent
+		curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/2000/c782/0,40124' --output - |
+			# D3N - Ano
+			# Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+			# Código (D2C) e Nome (D2N) da Variável
+			# Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+			# V - valor
+			jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+			sed 's/\\"//g' |          # remove \"
+			sed 's/"//g' |            # remove "
+			sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+			sed 's/*//g' |            # remove *
+			sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+			sed 's/|-/|0/g' |         # substitui |- por |0
+			tail -n +2 |              # ignora a linha de título
+			awk -F'|' '$8 >= 0' > raw/brasil_meso_rend_2000      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+		#+end_src
+
+
+
+****** 1999
+
+		API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/1999/c782/0,40124
+
+		#+name: rend_soja_muni_br_1999
+		#+begin_src shell :results silent
+		curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/1999/c782/0,40124' --output - |
+			# D3N - Ano
+			# Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+			# Código (D2C) e Nome (D2N) da Variável
+			# Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+			# V - valor
+			jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+			sed 's/\\"//g' |          # remove \"
+			sed 's/"//g' |            # remove "
+			sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+			sed 's/*//g' |            # remove *
+			sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+			sed 's/|-/|0/g' |         # substitui |- por |0
+			tail -n +2 |              # ignora a linha de título
+			awk -F'|' '$8 >= 0' > raw/brasil_meso_rend_1999      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+		#+end_src
+
+
+****** 1998
+
+		API: https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/1998/c782/0,40124
+
+		#+name: rend_soja_muni_br_1998
+		#+begin_src shell :results silent
+		curl --location --request GET 'https://apisidra.ibge.gov.br/values/t/5457/n8/all/v/112/p/1998/c782/0,40124' --output - |
+			# D3N - Ano
+			# Código (D1C) e Nome (D1N) da Mesoregião Geográfica
+			# Código (D2C) e Nome (D2N) da Variável
+			# Código (D4C) e Nome (D4N) do Produto (das lavouras temporárias e permanentes)
+			# V - valor
+			jq '.[] | [.D3N, .D1C, .D1N, .D2C, .D2N, .D4C, .D4N, .V] | @csv' |  # json para csv
+			sed 's/\\"//g' |          # remove \"
+			sed 's/"//g' |            # remove "
+			sed 's/,/|/g' |           # substitui vírgula (,) pelo pipe (|)
+			sed 's/*//g' |            # remove *
+			sed 's/|\.\.\./|0/g' |    # substitui |... por |0
+			sed 's/|-/|0/g' |         # substitui |- por |0
+			tail -n +2 |              # ignora a linha de título
+			awk -F'|' '$8 >= 0' > raw/brasil_meso_rend_1998      # ignora linhas cuja oitava coluna (valor) seja igual a zero
+		#+end_src
+
+		
